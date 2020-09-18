@@ -1,0 +1,2 @@
+<app-square *ngFor="let square of squares; let i = index" [position]="i"
+  [symbol]="square" (selected)="notifySquareSelected($event)"></app-square>

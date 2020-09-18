@@ -1,0 +1,1 @@
+<app-board [squares]="(game$ | async).board?.board" (squareSelected)="makeMove($event)"></app-board>
