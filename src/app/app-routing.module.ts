@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { GameComponent } from './game/game.component';
-import { JoinGameFormComponent } from './join-game-form/join-game-form.component';
+import { GamePageComponent } from './game-page/game-page.component';
+import { JoinPageComponent } from './join-page/join-page.component';
 
 const routes: Routes = [
-  { path: 'game/:id', component: GameComponent },
-  { path: '', component: JoinGameFormComponent },
+  { path: 'game/:id', component: GamePageComponent },
+  { path: '', component: JoinPageComponent },
 ];
 
 @NgModule({

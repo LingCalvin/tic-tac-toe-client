@@ -1,0 +1,9 @@
+form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.join-button {
+  width: 100%;
+}
