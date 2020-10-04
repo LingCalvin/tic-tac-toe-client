@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { GamePageComponent } from './game-page/game-page.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MatIconModule } from '@angular/material/icon';
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { GameService } from './game.service';
 
 @Component({
@@ -6,7 +9,31 @@ import { GameService } from './game.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  title = 'tic-tac-toe-client';
-  constructor(public gameService: GameService) {}
+export class AppComponent implements OnInit, OnDestroy {
+  title = 'Tic-Tac-Toe';
+  private ngUnsubscribe = new Subject<void>();
+
+  constructor(public gameService: GameService, private snackBar: MatSnackBar) {}
+
+  ngOnInit(): void {
+    this.getConnectionStatus();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  getConnectionStatus(): void {
+    this.gameService
+      .getConnectionStatusObservable()
+      .pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((status) => {
+        if (status === 'disconnected') {
+          this.snackBar.open('Attempting to connect to server...');
+        } else {
+          this.snackBar.dismiss();
+        }
+      });
+  }
 }

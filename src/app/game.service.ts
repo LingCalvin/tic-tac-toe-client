@@ -8,7 +8,7 @@ import {
 } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Game } from './classes/game';
-import { takeWhile } from 'rxjs/operators';
+import { delay, retryWhen, takeWhile, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../environments/environment';
 
@@ -21,17 +21,37 @@ export class GameService {
   clientId: string;
   pinger: Subscription;
   gameId = new Subject<string>();
+  private connectionStatus = new BehaviorSubject<'connected' | 'disconnected'>(
+    'disconnected'
+  );
 
   constructor(private http: HttpClient) {
     this.handleResponse = this.handleResponse.bind(this);
     this.gameSubject = new BehaviorSubject(new Game());
     this.socket = webSocket(environment.websocketURL);
-    this.socket.asObservable().subscribe(this.handleResponse);
+    this.socket
+      .asObservable()
+      .pipe(
+        retryWhen((errors) =>
+          errors.pipe(
+            tap(() => this.connectionStatus.next('disconnected')),
+            delay(15000)
+          )
+        )
+      )
+      .subscribe(this.handleResponse, (error) => {
+        if (error.type === 'close') {
+          this.connectionStatus.next('disconnected');
+        }
+      });
     this.pinger = interval(45000)
       .pipe(takeWhile(() => !this.socket.isStopped))
       .subscribe(() => this.socket.next({ event: 'ping' }));
   }
+
   private handleResponse(res: any): void {
+    console.log(res);
+    this.connectionStatus.next('connected');
     const clientId = res.data?.clientId;
     if (clientId) {
       this.clientId = clientId;
@@ -47,7 +67,6 @@ export class GameService {
   }
 
   create(): any {
-    // this.socket.next({ event: 'create' });
     return this.http.post(`${environment.restURL}/games/create`, {
       playerId: this.clientId,
     });
@@ -63,5 +82,9 @@ export class GameService {
 
   getGameObservable(): Observable<Game> {
     return this.gameSubject.asObservable();
+  }
+
+  getConnectionStatusObservable(): Observable<'connected' | 'disconnected'> {
+    return this.connectionStatus.asObservable();
   }
 }

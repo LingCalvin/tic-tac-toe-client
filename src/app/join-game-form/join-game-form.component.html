@@ -5,8 +5,9 @@
     <mat-error>This field is required.</mat-error>
   </mat-form-field>
 
-  <button mat-raised-button color="primary">Join</button>
+  <button mat-raised-button color="primary"
+    [disabled]="JoinGameForm.invalid || !(isConnected$ | async)">Join</button>
 </form>
 
 <button mat-raised-button color="primary" class="join-button"
-  (click)="newGame()">New Game</button>
+  (click)="newGame()" [disabled]="!(isConnected$ | async)">New Game</button>
