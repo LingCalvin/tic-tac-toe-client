@@ -18,6 +18,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { GamePageComponent } from './game-page/game-page.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NewGamePageComponent } from './new-game-page/new-game-page.component';
+import { NewGameFormComponent } from './new-game-form/new-game-form.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     JoinPageComponent,
     JoinGameFormComponent,
     GamePageComponent,
+    NewGamePageComponent,
+    NewGameFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +46,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatToolbarModule,
     MatIconModule,
     MatSnackBarModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

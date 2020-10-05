@@ -66,14 +66,15 @@ export class GameService {
     this.gameSubject.next(game);
   }
 
-  create(): any {
+  create(symbol?: 'X' | 'O'): any {
     return this.http.post(`${environment.restURL}/games/create`, {
       playerId: this.clientId,
+      symbol,
     });
   }
 
-  join(gameId: string): void {
-    this.socket.next({ event: 'join', data: gameId });
+  join(gameId: string, symbol?: 'X' | 'O'): void {
+    this.socket.next({ event: 'join', data: { gameId, symbol } });
   }
 
   move(x: number, y: number): void {

@@ -1,0 +1,8 @@
+mat-radio-group {
+  display: flex;
+  gap: 2rem;
+}
+
+.continue-button {
+  width: 100%;
+}

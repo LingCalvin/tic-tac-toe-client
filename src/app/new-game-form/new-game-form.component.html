@@ -1,0 +1,14 @@
+<form [formGroup]="newGameForm" (ngSubmit)="newGame()">
+  <label>Select a symbol</label>
+  <mat-radio-group formControlName="symbol">
+    <mat-radio-button value="X">
+      <h1>X</h1>
+    </mat-radio-button>
+    <mat-radio-button value="O">
+      <h1>O</h1>
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <button mat-raised-button color="primary" class="continue-button"
+    [disabled]="!(isConnected$ | async)">Continue</button>
+</form>

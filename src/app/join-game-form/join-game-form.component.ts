@@ -12,7 +12,7 @@ import { GameService } from '../game.service';
 })
 export class JoinGameFormComponent implements OnInit {
   isConnected$: Observable<boolean>;
-  JoinGameForm = new FormGroup({
+  joinGameForm = new FormGroup({
     gameId: new FormControl('', Validators.required),
   });
   constructor(private router: Router, private gameService: GameService) {}
@@ -22,16 +22,14 @@ export class JoinGameFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.JoinGameForm.invalid) {
+    if (this.joinGameForm.invalid) {
       return;
     }
-    this.router.navigate(['game', this.JoinGameForm.value.gameId]);
+    this.router.navigate(['game', this.joinGameForm.value.gameId]);
   }
 
   newGame(): void {
-    this.gameService
-      .create()
-      .subscribe(({ gameId }) => this.router.navigate(['game', gameId]));
+    this.router.navigateByUrl('/game/new');
   }
 
   getConnectionStatus(): void {
